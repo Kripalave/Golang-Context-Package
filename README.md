@@ -1,4 +1,4 @@
-What is context API?
+## What is context API?
 
 The context package in Go provides a mechanism to prevent the application from doing unnecessary work.
 context is a standard package of Golang that makes it easy to pass request-scoped values, 
@@ -8,7 +8,7 @@ handling a request.
 Package context defines the Context type, which carries deadlines,
 cancellation signals, and other request-scoped values across API boundaries and between processes.
 
-Why Use Context?
+## Why Use Context?
 - It simplifies the implementation for deadlines and cancellation across your processes or API.
 - It prepares your code for scaling, for example, using Context will make your code clean 
  and easy to manipulate in the future by chaining all your process in a child parent relationship,
@@ -17,7 +17,7 @@ Why Use Context?
 
 
 
-Creating a Context
+## Creating a Context
     The two ways to create a Context:
         - context.Background()
         - context.TODO()
@@ -26,7 +26,7 @@ Creating a Context
         context.TODO()function which is used to create an empty (or starting) context. We can use this when we don't know which context we want to use particularly. It will act like a placeholder.
 
 
- We have four options for making our context stop the program execution if a long period has passed:
+ ## We have four options for making our context stop the program execution if a long period has passed:
 
     - context.Value
     - context.WithCancel
@@ -39,7 +39,7 @@ Creating a Context
     you can do so using contexts. The easiest way to do that is to use the function context.WithValue. 
     This function creates a new context based on a parent context and adds a value to a given key. 
 
-    Example:
+Example:
     package main
 
     import (
@@ -62,11 +62,13 @@ Creating a Context
         fmt.Println(val)
     }
     
-2)context.WithTimeout: Read file with Context Timeout
+## 2)context.WithTimeout: Read file with Context Timeout
+
 context.WithTimeout function to create a new context that is canceled when the specified timeout elapses. 
 The function takes two arguments: an existing context and a duration for the timeout.
 
 Example 1:
+
 package main
 import (
 	"context"
@@ -78,12 +80,12 @@ import (
 
 func main() {
 	ctx := context.Background()
-	//context.WithTimeout to create a context that is canceled after 5 seconds
+	/*context.WithTimeout to create a context that is canceled after 5 seconds */
 	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
 	defer cancel()
 
 	select {
-	//reading file exceeds more than five then it prints  context error message 'context deadline exceeded'
+	/* reading file exceeds more than five then it prints  context error message 'context deadline  exceeded' */
 	case <-time.After(time.Second * 4):
 		readfile("test.ini")
 	case <-ctx.Done():
@@ -99,7 +101,7 @@ func readfile(filename string){
 
 	defer file.Close()
 	scanner := bufio.NewScanner(file)
-	scanner.Scan() // this moves to the next token
+	scanner.Scan() 
 	for scanner.Scan() {
 		fmt.Println(scanner.Text())
 	}
@@ -107,7 +109,7 @@ func readfile(filename string){
 }
 
 
-Example2: Database Query Timeout using Context
+## Example2: Database Query Timeout using Context
     context package to set a deadline for the query execution.
     First, create a context with a timeout using the context.WithTimeout function. 
     Then, pass the context as the first argument to the query execution function 
@@ -122,28 +124,30 @@ Example2: Database Query Timeout using Context
     )
     
     func main() {
-      // Open a connection to the database
+      /* Open a connection to the database */
       db, _ := sql.Open("driverName", "dataSourceName")
     
-      // Create a context with a timeout of 1 second
-      //If the query takes longer than 1 second to execute, it will be cancelled and an error will be returned.
+      /*
+       Create a context with a timeout of 1 second
+      If the query takes longer than 1 second to execute, it will be cancelled and an error will be returned.
+      **/
 
       ctx, cancel := context.WithTimeout(context.Background(), time.Second)
       defer cancel()
     
-      // Execute the query with the context
+      /* Execute the query with the context */
       rows, err := db.QueryContext(ctx, "SELECT * FROM table")
       if err != nil {
         fmt.Println(err)
       }
       defer rows.Close()
     
-      // Handle the query results
-      // ...
+      /* Handle the query results */
+      
     }
 
 
-Example4:Using Context for HTTP
+## Example4:Using Context for HTTP
     
   package main
 
@@ -160,16 +164,17 @@ Example4:Using Context for HTTP
   func main() {
       ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
       defer cancel()
-	    /*
-	    Request will be canceled if the Done channel is closed by the context, 
-	    but it will not close the connection. 
-	    It's the responsibility of the application to close the connection
-	    */
-      resp, err := ctxhttp.Get(ctx, nil, "https://example.com")
-      if err != nil {
-          fmt.Println("Error:", err)
-          return
-      }
+    /*
+     Request will be canceled if the Done channel is closed by the context, 
+     but it will not close the connection. 
+     It's the responsibility of the application to close the connection
+    **/
+
+    resp, err := ctxhttp.Get(ctx, nil, "https://example.com")
+    if err != nil {
+        fmt.Println("Error:", err)
+        return
+    }
       defer resp.Body.Close()
   
       body, err := ioutil.ReadAll(resp.Body)
@@ -182,8 +187,8 @@ Example4:Using Context for HTTP
   }
 
 
-  context.WithDeadline
-  ====================
+##  context.WithDeadline
+  
   context.WithDeadline function creates a new context with an associated deadline.
   The deadline is a specific point in time after which the context will be considered "dead" and any associated work will be cancelled.
   The function takes in two arguments: the existing context, and the deadline time. 
@@ -198,8 +203,9 @@ Example4:Using Context for HTTP
       "os"
       "bufio"
   )
-  //test.ini 
-  //{"NodeName":"ncvm1","NodeIP":"127.0.0.1","Upordown":"1","Port":"[0:1 Gbps  1:Down  ]","Status":"Running","Duration":"00:07:35:00","BeginTime":"2023-04-23 18:40:00","EndTime":"2023-04-24 02:15:00","License":"Evaluation","TimeZone":"UTC","PreCaptureFilter":"On","VirtualStorage":"1288.74GB","RealStorage":"455.00GB","Capturedrops":"0","BeginTimeSeconds":"1682275200","CaptureServerTime":"139728548030336","Throughput":"0.04","CompressionRatio":"2.83","ClusterCount":"0","tcppps":"7147","udppps":"318","otherpps":"0","totalpps":"7465","LogDataCompressionRatio":"1.00","PercentIOWait":"82.00","LoadAverage":"0.00 8.41 8.42"}
+  /* test.ini 
+ {"NodeName":"ncvm1","NodeIP":"127.0.0.1","Upordown":"1","Port":"[0:1 Gbps  1:Down  ]","Status":"Running","Duration":"00:07:35:00","BeginTime":"2023-04-23 18:40:00","EndTime":"2023-04-24 02:15:00","License":"Evaluation","TimeZone":"UTC","PreCaptureFilter":"On","VirtualStorage":"1288.74GB","RealStorage":"455.00GB","Capturedrops":"0","BeginTimeSeconds":"1682275200","CaptureServerTime":"139728548030336","Throughput":"0.04","CompressionRatio":"2.83","ClusterCount":"0","tcppps":"7147","udppps":"318","otherpps":"0","totalpps":"7465","LogDataCompressionRatio":"1.00","PercentIOWait":"82.00","LoadAverage":"0.00 8.41 8.42"}
+ **/
 
   func main() {
       ctx := context.Background()
@@ -230,18 +236,18 @@ Example4:Using Context for HTTP
   }
 
 
-  context.WithCancel:
+##  context.WithCancel:
   ==================
   context.WithCancel returns a new context and a cancel function.
   We defer the cancel function so that it is called when the main function exits. 
   it will check if the context has been done, if yes, the function will return.
 
-Why Do We Need Cancellation?
-   - In short, we need cancellation to prevent our system from doing unnecessary work.
-    Consider the common situation of an HTTP server making a call to a database, 
-    and returning the queried data to the client:
+## Why Do We Need Cancellation?
+    - In short, we need cancellation to prevent our system from doing unnecessary work.
+        Consider the common situation of an HTTP server making a call to a database, 
+        and returning the queried data to the client:
     - But, what would happen if the client cancelled the request in the middle? 
-    This could happen if, for example, the client closed their browser mid-request.
+        This could happen if, for example, the client closed their browser mid-request.
     - Without cancellation, the application server and database would continue to do their work, 
       even though the result of that work would be wasted:
 
@@ -267,7 +273,7 @@ func main() {
 			log.Println(err)
 		}
 	}()
-	// perform some operation and that causes error
+	/* perform some operation and that causes error */
 	time.Sleep(time.Millisecond * 10)
 	if true { // err != nil
 		cancel()
