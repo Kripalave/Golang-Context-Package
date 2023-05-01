@@ -160,11 +160,11 @@ Example4:Using Context for HTTP
   func main() {
       ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
       defer cancel()
-    /*
-    Request will be canceled if the Done channel is closed by the context, 
-    but it will not close the connection. 
-    It's the responsibility of the application to close the connection
-    */
+	    /*
+	    Request will be canceled if the Done channel is closed by the context, 
+	    but it will not close the connection. 
+	    It's the responsibility of the application to close the connection
+	    */
       resp, err := ctxhttp.Get(ctx, nil, "https://example.com")
       if err != nil {
           fmt.Println("Error:", err)
