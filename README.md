@@ -203,10 +203,7 @@ func readfile(filename string){
       "os"
       "bufio"
   )
-  /* test.ini 
- {"NodeName":"ncvm1","NodeIP":"127.0.0.1","Upordown":"1","Port":"[0:1 Gbps  1:Down  ]","Status":"Running","Duration":"00:07:35:00","BeginTime":"2023-04-23 18:40:00","EndTime":"2023-04-24 02:15:00","License":"Evaluation","TimeZone":"UTC","PreCaptureFilter":"On","VirtualStorage":"1288.74GB","RealStorage":"455.00GB","Capturedrops":"0","BeginTimeSeconds":"1682275200","CaptureServerTime":"139728548030336","Throughput":"0.04","CompressionRatio":"2.83","ClusterCount":"0","tcppps":"7147","udppps":"318","otherpps":"0","totalpps":"7465","LogDataCompressionRatio":"1.00","PercentIOWait":"82.00","LoadAverage":"0.00 8.41 8.42"}
- **/
-
+  
   func main() {
       ctx := context.Background()
       deadline := time.Now().Add(time.Second * 6)
